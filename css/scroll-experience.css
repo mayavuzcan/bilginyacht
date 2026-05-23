@@ -451,11 +451,28 @@
    MOBILE RESPONSIVE
    ══════════════════════════════════════════════════════════ */
 @media (max-width: 767px) {
-  /* ── Hide scroll-driven chrome on mobile ── */
-  .chapter-dots,
-  .chapter-counter,
-  .scroll-hero__progress {
+  /* ── Hide counter on mobile, keep dots + progress bar ── */
+  .chapter-counter {
     display: none;
+  }
+
+  /* ── Bigger tap targets for chapter dots on mobile ── */
+  .chapter-dots {
+    right: 1rem;
+    gap: 0.9rem;
+  }
+  .chapter-dot {
+    width: 8px;
+    height: 8px;
+    /* extend tap area without changing visual size */
+    padding: 8px;
+    margin: -8px;
+    background-clip: content-box;
+    -webkit-background-clip: content-box;
+    background-origin: content-box;
+  }
+  .chapter-dot.is-active {
+    transform: scale(1.2);
   }
 
   /* ── Smaller headline on mobile ── */

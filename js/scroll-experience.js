@@ -54,6 +54,9 @@ class ScrollVideoHero {
     this.isMobile      = window.matchMedia('(max-width: 767px)').matches;
     this.reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+    /* Mobile gets a shorter pin distance — less fatigue, same chapters */
+    this.scrollVh = this.isMobile ? 420 : ScrollVideoHero.SCROLL_VH;
+
     if (!this.section) return;
     this.init();
     this.buildDotListeners();
@@ -139,8 +142,8 @@ class ScrollVideoHero {
     const v = this.video;
     if (!v || !src) return;
 
-    /* Mobile: autoplay looping background */
-    if (this.isMobile || this.reducedMotion) {
+    /* Reduced-motion only: autoplay looping background */
+    if (this.reducedMotion) {
       v.src = src;
       v.setAttribute('autoplay', '');
       v.setAttribute('loop', '');
@@ -151,10 +154,11 @@ class ScrollVideoHero {
       return;
     }
 
-    /* Desktop: scroll-driven currentTime scrubbing */
+    /* All devices (desktop + mobile): scroll-driven currentTime scrubbing */
     v.src = src;
     v.preload = 'auto';
     v.muted = true;
+    /* iOS Safari: must call load() before seeking is possible */
     v.load();
 
     const onMeta = () => {
@@ -178,15 +182,18 @@ class ScrollVideoHero {
    * Plays the entrance animation for chapter 0.
    */
   enterIntro() {
-    if (this.isMobile || this.reducedMotion) return;
+    if (this.reducedMotion) return;
+
     const ch0    = this.chapters[0];
     const vessel = this.section.querySelector('.scroll-hero__vessel');
     const tl     = gsap.timeline({ defaults: { ease: 'power4.out' } });
 
-    if (vessel) tl.to(vessel, { opacity: 0.6, duration: 2.8 }, 0);
+    if (!this.isMobile && vessel) {
+      tl.to(vessel, { opacity: 0.6, duration: 2.8 }, 0);
+    }
     if (ch0) {
       const inner = ch0.querySelector('.chapter__inner');
-      if (inner) tl.from(inner, { y: 50, opacity: 0, duration: 1.2 }, 0.4);
+      if (inner) tl.from(inner, { y: this.isMobile ? 30 : 50, opacity: 0, duration: 1.2 }, 0.4);
     }
   }
 
@@ -195,7 +202,8 @@ class ScrollVideoHero {
      ════════════════════════════════════════════════════════ */
 
   init() {
-    if (this.isMobile || this.reducedMotion) {
+    /* Reduced-motion: static fallback only */
+    if (this.reducedMotion) {
       this.initMobileFallback();
       return;
     }
@@ -248,9 +256,9 @@ class ScrollVideoHero {
     this.st = ScrollTrigger.create({
       trigger   : this.section,
       start     : 'top top',
-      end       : `+=${ScrollVideoHero.SCROLL_VH}%`,
+      end       : `+=${this.scrollVh}%`,
       pin       : true,
-      scrub     : 0.9,      /* responsive enough to avoid a frozen feel */
+      scrub     : this.isMobile ? 0.5 : 0.9,  /* faster response on mobile touch */
       animation : tl,
 
       onUpdate(st) {
@@ -304,19 +312,15 @@ class ScrollVideoHero {
     });
   }
 
-  /* ── Mobile fallback ─────────────────────────────────────── */
+  /* ── Reduced-motion static fallback ───────────────────────── */
   initMobileFallback() {
-    const v = this.video;
-    if (v) {
-      v.setAttribute('autoplay', '');
-      v.setAttribute('loop', '');
-      v.muted = true;
-      v.play().catch(() => {});
-    }
+    /* Only reaches here when prefers-reduced-motion: reduce is set.
+       Video will be set to autoplay loop via onVideoSrcSet().
+       Just fade in the first chapter text. */
     const ch0 = this.chapters[0];
     if (ch0) {
       const inner = ch0.querySelector('.chapter__inner');
-      if (inner) gsap.from(inner, { y: 40, opacity: 0, duration: 1.4, delay: 2.8, ease: 'power3.out' });
+      if (inner) gsap.from(inner, { y: 30, opacity: 0, duration: 1.2, delay: 0.8, ease: 'power3.out' });
     }
   }
 
