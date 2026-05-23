@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Bilgin Yacht — Crafted for the Exceptional</title>
+  <meta name="description" content="Custom superyachts built in Istanbul since 1938. Each Bilgin is a singular work of maritime art.">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;1,9..40,300&family=DM+Mono:wght@300;400&display=swap" rel="stylesheet">
+
+  <script src="js/vendor/gsap.min.js"></script>
+  <script src="js/vendor/ScrollTrigger.min.js"></script>
+  <script src="js/vendor/lenis.min.js"></script>
+
+  <link rel="stylesheet" href="css/main.css">
+  <link rel="stylesheet" href="css/scroll-experience.css">
+  <link rel="stylesheet" href="css/feadship-inspired.css">
+</head>
+<body class="is-loading">
+
+  <!-- ── LOADER ─────────────────────────────────────────── -->
+  <div class="loader" id="loader">
+    <div class="loader__inner">
+      <p class="loader__est">EST. 1938</p>
+      <div class="loader__wordmark">
+        <span class="loader__bilgin">BILGIN</span>
+        <span class="loader__ycht">YACHT</span>
+      </div>
+    </div>
+    <div class="loader__bar-wrap">
+      <div class="loader__bar-fill" id="loaderFill"></div>
+    </div>
+  </div>
+
+  <!-- ── NAVIGATION ─────────────────────────────────────── -->
+  <nav class="nav" id="nav">
+    <div class="nav__inner">
+      <a href="#hero" class="nav__logo">
+        <span class="nav__logo-b">BILGIN</span>
+        <span class="nav__logo-y">YACHT</span>
+      </a>
+      <div class="nav__links" id="navLinks">
+        <a href="#exterior"       class="nav__link">New Build</a>
+        <a href="#interior"       class="nav__link">Onboard</a>
+        <a href="#specifications" class="nav__link">Fleet</a>
+        <a href="#story"          class="nav__link">Insights</a>
+      </div>
+      <a href="#cta" class="nav__cta">Private Viewing</a>
+      <button class="nav__burger" id="navBurger" aria-label="Open menu">
+        <span></span><span></span>
+      </button>
+    </div>
+    <div class="nav__mobile-panel" id="navMobile">
+      <a href="#exterior"       class="nav__m-link">Collection</a>
+      <a href="#interior"       class="nav__m-link">Interiors</a>
+      <a href="#specifications" class="nav__m-link">Specifications</a>
+      <a href="#story"          class="nav__m-link">Heritage</a>
+      <a href="#cta"            class="nav__m-link nav__m-link--cta">Private Viewing</a>
+    </div>
+  </nav>
+
+  <!-- ── SCROLL HERO ──────────────────────────────────────── -->
+  <!--
+    Scroll-driven cinematic hero.
+    · Video currentTime driven by scroll progress (not autoplay).
+    · Pinned for 560vh — tuned for a faster, less sticky scroll.
+    · Chapter text fades in/out via GSAP scrubbed timeline.
+    · Mobile fallback: autoplay video + static intro text.
+  -->
+  <section class="scroll-hero" id="hero">
+
+    <!-- Ambient particles canvas -->
+    <canvas class="scroll-hero__canvas" id="heroCanvas"></canvas>
+
+    <!-- Gold gradient ambience -->
+    <div class="scroll-hero__ambient"></div>
+
+    <!-- Kling AI video — scroll-driven on desktop, autoplay on mobile -->
+    <video class="scroll-hero__video" id="heroVideo"
+      muted playsinline preload="metadata"
+      aria-hidden="true"></video>
+
+    <!-- Fallback static image (used if no video, or on very slow connections) -->
+    <div class="scroll-hero__fallback" id="heroFallback" aria-hidden="true"></div>
+
+    <!-- Frame sequence canvas — Apple-style pre-decoded JPEG rendering -->
+    <!-- Replaces video.currentTime scrubbing with zero-latency canvas blits -->
+    <canvas class="scroll-hero__frame-canvas" id="heroFrameCanvas" aria-hidden="true"></canvas>
+
+    <!-- Cinematic vignette overlay -->
+    <div class="scroll-hero__vignette" aria-hidden="true"></div>
+
+    <!-- Yacht silhouette (fades in after loader) -->
+    <div class="scroll-hero__vessel" aria-hidden="true">
+      <svg class="vessel-svg" viewBox="0 0 1400 320" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet">
+        <path d="M0 240 Q350 234 700 237 Q1050 240 1400 237" stroke="rgba(200,169,81,0.08)" stroke-width="1" fill="none"/>
+        <path d="M180 218 Q240 192 400 184 L1000 184 Q1150 184 1210 218 Q1250 230 1260 240 L180 240 Z" fill="rgba(200,169,81,0.03)" stroke="rgba(200,169,81,0.12)" stroke-width="0.8"/>
+        <rect x="350" y="150" width="580" height="36" rx="2" fill="rgba(200,169,81,0.02)" stroke="rgba(200,169,81,0.10)" stroke-width="0.7"/>
+        <rect x="440" y="118" width="380" height="34" rx="2" fill="rgba(200,169,81,0.02)" stroke="rgba(200,169,81,0.08)" stroke-width="0.7"/>
+        <rect x="520" y="91" width="210" height="29" rx="2" fill="rgba(200,169,81,0.015)" stroke="rgba(200,169,81,0.07)" stroke-width="0.7"/>
+        <line x1="625" y1="91" x2="625" y2="42" stroke="rgba(200,169,81,0.08)" stroke-width="0.8"/>
+        <line x1="625" y1="62" x2="672" y2="72" stroke="rgba(200,169,81,0.05)" stroke-width="0.6"/>
+        <line x1="625" y1="62" x2="578" y2="72" stroke="rgba(200,169,81,0.05)" stroke-width="0.6"/>
+        <circle cx="440"  cy="201" r="4.5" fill="none" stroke="rgba(200,169,81,0.10)" stroke-width="0.7"/>
+        <circle cx="490"  cy="201" r="4.5" fill="none" stroke="rgba(200,169,81,0.09)" stroke-width="0.7"/>
+        <circle cx="540"  cy="201" r="4.5" fill="none" stroke="rgba(200,169,81,0.09)" stroke-width="0.7"/>
+        <circle cx="590"  cy="201" r="4.5" fill="none" stroke="rgba(200,169,81,0.09)" stroke-width="0.7"/>
+        <circle cx="640"  cy="201" r="4.5" fill="none" stroke="rgba(200,169,81,0.09)" stroke-width="0.7"/>
+        <circle cx="690"  cy="201" r="4.5" fill="none" stroke="rgba(200,169,81,0.09)" stroke-width="0.7"/>
+        <rect x="370" y="159" width="30" height="17" rx="2" fill="none" stroke="rgba(200,169,81,0.07)" stroke-width="0.6"/>
+        <rect x="415" y="159" width="30" height="17" rx="2" fill="none" stroke="rgba(200,169,81,0.07)" stroke-width="0.6"/>
+        <rect x="460" y="159" width="30" height="17" rx="2" fill="none" stroke="rgba(200,169,81,0.07)" stroke-width="0.6"/>
+        <rect x="505" y="159" width="30" height="17" rx="2" fill="none" stroke="rgba(200,169,81,0.06)" stroke-width="0.6"/>
+        <path d="M180 240 Q210 244 700 241 Q1200 238 1260 244" stroke="rgba(200,169,81,0.04)" stroke-width="0.5" fill="none"/>
+      </svg>
+    </div>
+
+    <!-- ── 7 Cinematic Story Chapters ── -->
+    <div class="chapters" id="heroChapters" aria-live="polite">
+
+      <!-- Chapter 0: Intro / Yacht Reveal -->
+      <div class="chapter" data-chapter="0" aria-label="Chapter 1 of 7: Introduction">
+        <div class="chapter__inner chapter__inner--center">
+          <span class="chapter__eyebrow">BILGIN YACHTS &nbsp;·&nbsp; ISTANBUL &nbsp;·&nbsp; EST. 1938</span>
+          <h1 class="chapter__headline">
+            Beyond the<br>
+            expected<br>
+            superyacht.
+          </h1>
+          <p class="chapter__sub">Pure custom creation from Istanbul, shaped for the world’s most exacting journeys.</p>
+          <div class="chapter__scroll-cue" aria-hidden="true">
+            <span>SCROLL TO EXPERIENCE</span>
+            <div class="chapter__scroll-line"></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Chapter 1: Exterior Orbit -->
+      <div class="chapter" data-chapter="1" aria-label="Chapter 2 of 7: Exterior">
+        <div class="chapter__inner chapter__inner--left">
+          <span class="chapter__eyebrow">I &nbsp;—&nbsp; IMAGINE</span>
+          <h2 class="chapter__headline">Where vision<br>finds form.</h2>
+          <p class="chapter__sub">Every line begins with a private ambition, translated into proportion, volume and calm.</p>
+        </div>
+      </div>
+
+      <!-- Chapter 2: Deck Approach -->
+      <div class="chapter" data-chapter="2" aria-label="Chapter 3 of 7: The Deck">
+        <div class="chapter__inner chapter__inner--right">
+          <span class="chapter__eyebrow">II &nbsp;—&nbsp; DESIGN</span>
+          <h2 class="chapter__headline">Made around<br>a life at sea.</h2>
+          <p class="chapter__sub">Decks, suites and salons resolved as one continuous experience.</p>
+        </div>
+      </div>
+
+      <!-- Chapter 3: Interior Luxury -->
+      <div class="chapter" data-chapter="3" aria-label="Chapter 4 of 7: Interior">
+        <div class="chapter__inner chapter__inner--left">
+          <span class="chapter__eyebrow">III &nbsp;—&nbsp; BUILD</span>
+          <h2 class="chapter__headline">There are no<br>standard answers.</h2>
+          <p class="chapter__sub">A full-custom vessel, engineered and finished by hand on the Bosphorus.</p>
+        </div>
+      </div>
+
+      <!-- Chapter 4: Craftsmanship -->
+      <div class="chapter" data-chapter="4" aria-label="Chapter 5 of 7: Craftsmanship">
+        <div class="chapter__inner chapter__inner--center">
+          <span class="chapter__eyebrow">IV &nbsp;—&nbsp; CRAFT</span>
+          <h2 class="chapter__headline">Quiet details.<br>Exactingly<br>made.</h2>
+          <p class="chapter__sub">Three generations of Turkish mastery, measured in millimetres.</p>
+        </div>
+      </div>
+
+      <!-- Chapter 5: Engineering -->
+      <div class="chapter" data-chapter="5" aria-label="Chapter 6 of 7: Engineering">
+        <div class="chapter__inner chapter__inner--right">
+          <span class="chapter__eyebrow">V &nbsp;—&nbsp; ENGINEERING</span>
+          <h2 class="chapter__headline">
+            72<span class="chapter__unit">m</span><span class="chapter__dot-sep">·</span>18<span class="chapter__unit">kn</span><br>
+            4,200<span class="chapter__unit">nm</span>
+          </h2>
+          <p class="chapter__sub">Twin MTU engines.<br>Bureau Veritas classification.<br>Engineered without compromise.</p>
+        </div>
+      </div>
+
+      <!-- Chapter 6: Private Viewing CTA -->
+      <div class="chapter" data-chapter="6" aria-label="Chapter 7 of 7: Private Viewing">
+        <div class="chapter__inner chapter__inner--center">
+          <span class="chapter__eyebrow">VI &nbsp;—&nbsp; PRIVATE VIEWING</span>
+          <h2 class="chapter__headline">Begin with<br>a conversation.</h2>
+          <p class="chapter__sub">Every Bilgin begins with a single conversation.</p>
+          <a href="#cta" class="chapter__btn">Request Private Consultation</a>
+        </div>
+      </div>
+
+    </div><!-- /chapters -->
+
+    <!-- Video progress bar -->
+    <div class="scroll-hero__progress" aria-hidden="true">
+      <div class="scroll-hero__progress-fill" id="heroProgressFill"></div>
+    </div>
+
+    <!-- Chapter dot navigation -->
+    <nav class="chapter-dots" id="chapterDots" aria-label="Story progress">
+      <button class="chapter-dot is-active" data-chapter="0" aria-label="Introduction"></button>
+      <button class="chapter-dot" data-chapter="1" aria-label="Exterior"></button>
+      <button class="chapter-dot" data-chapter="2" aria-label="Deck"></button>
+      <button class="chapter-dot" data-chapter="3" aria-label="Interior"></button>
+      <button class="chapter-dot" data-chapter="4" aria-label="Craftsmanship"></button>
+      <button class="chapter-dot" data-chapter="5" aria-label="Engineering"></button>
+      <button class="chapter-dot" data-chapter="6" aria-label="Private Viewing"></button>
+    </nav>
+
+    <!-- Chapter counter -->
+    <div class="chapter-counter" aria-hidden="true">
+      <span id="chapterCur" class="chapter-counter__cur">01</span>
+      <span class="chapter-counter__sep">/</span>
+      <span class="chapter-counter__tot">07</span>
+    </div>
+
+  </section>
+
+  <!-- ── EXTERIOR ───────────────────────────────────────── -->
+  <section class="exterior" id="exterior">
+    <div class="exterior__trigger" id="exteriorTrigger">
+      <div class="exterior__pin" id="exteriorPin">
+        <div class="exterior__track" id="exteriorTrack">
+
+          <!-- Panel 0: Intro text -->
+          <div class="exterior__panel exterior__panel--intro">
+            <div class="exterior__intro-content">
+              <p class="section-label">New Build I</p>
+              <h2 class="section-title">Imagine.<br>Design.<br>Build.</h2>
+              <div class="gold-line"></div>
+              <p class="section-body">Every Bilgin begins as a conversation between an owner’s imagination and a shipyard capable of making it real. From first sketch to final sea trial, the answer is never off the shelf.</p>
+              <div class="exterior__scroll-hint">
+                <svg width="44" height="10" viewBox="0 0 44 10" fill="none">
+                  <line x1="0" y1="5" x2="38" y2="5" stroke="currentColor" stroke-width="0.8"/>
+                  <path d="M36 1.5 L42 5 L36 8.5" stroke="currentColor" stroke-width="0.8" fill="none"/>
+                </svg>
+                <span>Swipe to explore</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel 1: Bow -->
+          <div class="exterior__panel exterior__panel--img">
+            <div class="exterior__img-wrap" data-parallax-wrap>
+              <img src="https://picsum.photos/seed/bilgin-ocean1/1600/1000" alt="Bow perspective" class="exterior__img" data-parallax data-parallax-speed="0.08" loading="lazy">
+              <div class="exterior__img-veil"></div>
+            </div>
+            <div class="exterior__caption">
+              <span class="exterior__cap-num">01</span>
+              <span class="exterior__cap-text">The Bow — Where the ocean parts</span>
+            </div>
+          </div>
+
+          <!-- Panel 2: Aerial profile -->
+          <div class="exterior__panel exterior__panel--img">
+            <div class="exterior__img-wrap" data-parallax-wrap>
+              <img src="https://picsum.photos/seed/bilgin-sea2/1600/1000" alt="Profile view" class="exterior__img" data-parallax data-parallax-speed="0.08" loading="lazy">
+              <div class="exterior__img-veil"></div>
+            </div>
+            <div class="exterior__caption">
+              <span class="exterior__cap-num">02</span>
+              <span class="exterior__cap-text">The Profile — Timeless lines</span>
+            </div>
+          </div>
+
+          <!-- Panel 3: Aft + Stats -->
+          <div class="exterior__panel exterior__panel--stats-panel">
+            <div class="exterior__img-wrap exterior__img-wrap--half" data-parallax-wrap>
+              <img src="https://picsum.photos/seed/bilgin-aft3/1600/1000" alt="Aft deck" class="exterior__img" data-parallax data-parallax-speed="0.08" loading="lazy">
+              <div class="exterior__img-veil"></div>
+            </div>
+            <div class="exterior__stats">
+              <div class="stat">
+                <div class="stat__top">
+                  <span class="stat__num" data-count="72">0</span>
+                  <span class="stat__unit">m</span>
+                </div>
+                <span class="stat__label">Length Overall</span>
+              </div>
+              <div class="stat">
+                <div class="stat__top">
+                  <span class="stat__num" data-count="128" data-display="12.8">0</span>
+                  <span class="stat__unit">m</span>
+                </div>
+                <span class="stat__label">Maximum Beam</span>
+              </div>
+              <div class="stat">
+                <div class="stat__top">
+                  <span class="stat__num" data-count="14">0</span>
+                  <span class="stat__unit">kn</span>
+                </div>
+                <span class="stat__label">Cruise Speed</span>
+              </div>
+              <div class="stat">
+                <div class="stat__top">
+                  <span class="stat__num" data-count="4200">0</span>
+                  <span class="stat__unit">nm</span>
+                </div>
+                <span class="stat__label">Range</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── INTERIOR ───────────────────────────────────────── -->
+  <section class="interior" id="interior">
+    <div class="container">
+      <div class="interior__header">
+        <p class="section-label">Onboard II</p>
+        <h2 class="section-title">Navigate<br>your journey.</h2>
+      </div>
+    </div>
+
+    <div class="interior__showcase">
+      <div class="interior__showcase-img" data-parallax-wrap>
+        <img src="https://picsum.photos/seed/bilgin-salon/1800/1000" alt="Grand Salon" data-parallax data-parallax-speed="0.10" loading="lazy">
+        <div class="interior__showcase-veil"></div>
+        <div class="interior__showcase-tag">
+          <span class="interior__showcase-name">The Grand Salon</span>
+          <span class="interior__showcase-detail">72 m² of curated living space</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="container">
+      <div class="interior__grid">
+        <div class="interior__card">
+          <div class="interior__card-img" data-parallax-wrap>
+            <img src="https://picsum.photos/seed/bilgin-cabin/900/680" alt="Master stateroom" data-parallax data-parallax-speed="0.07" loading="lazy">
+            <div class="interior__card-veil"></div>
+          </div>
+          <p class="interior__card-name">Master Stateroom</p>
+          <p class="interior__card-note">Private terrace. Panoramic sea views.</p>
+        </div>
+
+        <div class="interior__body-col">
+          <p class="interior__body-text">Step aboard and time changes. Each interior begins with a single question: how should the ocean feel from inside? The answer varies with every commission — but the standard never does.</p>
+          <p class="interior__body-text">Our interior design team works alongside our engineering division, ensuring that beauty and structure are resolved together — never one after the other.</p>
+          <div class="interior__figures">
+            <div class="interior__figure">
+              <span class="interior__fig-num">6</span>
+              <span class="interior__fig-label">Guest suites</span>
+            </div>
+            <div class="interior__figure">
+              <span class="interior__fig-num">480</span>
+              <span class="interior__fig-label">m² living area</span>
+            </div>
+            <div class="interior__figure">
+              <span class="interior__fig-num">20</span>
+              <span class="interior__fig-label">Crew</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="interior__card">
+          <div class="interior__card-img" data-parallax-wrap>
+            <img src="https://picsum.photos/seed/bilgin-dining/900/680" alt="Formal dining" data-parallax data-parallax-speed="0.07" loading="lazy">
+            <div class="interior__card-veil"></div>
+          </div>
+          <p class="interior__card-name">Formal Dining</p>
+          <p class="interior__card-note">Seats 12. Climate-controlled wine cellar below.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── CRAFTSMANSHIP ──────────────────────────────────── -->
+  <section class="craft" id="craftsmanship">
+    <div class="craft__bg"></div>
+    <div class="container">
+      <div class="craft__header">
+        <p class="section-label section-label--light">Craft III</p>
+        <h2 class="section-title section-title--light craft__headline">Custom creation,<br>without shortcuts.</h2>
+        <div class="gold-line"></div>
+      </div>
+      <div class="craft__layout">
+        <div class="craft__primary-img" data-parallax-wrap>
+          <img src="https://picsum.photos/seed/bilgin-craftsman/1000/1300" alt="Craftsman at work" data-parallax data-parallax-speed="0.09" loading="lazy">
+          <div class="craft__primary-veil"></div>
+        </div>
+        <div class="craft__right">
+          <p class="craft__body">Our master craftsmen in Istanbul have refined the art of superyacht construction across three generations. The Bilgin shipyard on the Bosphorus is where precision engineering meets old-world artisanship.</p>
+          <p class="craft__body">Only the finest materials are considered — and most are rejected. The wood that lines our salons is hand-selected. The joinery executed to tolerances of less than a millimeter.</p>
+          <div class="craft__materials">
+            <div class="craft__mat">
+              <span class="craft__mat-name">Italian Marble</span>
+              <span class="craft__mat-origin">Carrara, Italy</span>
+            </div>
+            <div class="craft__mat">
+              <span class="craft__mat-name">Book-Matched Walnut</span>
+              <span class="craft__mat-origin">American Black Walnut</span>
+            </div>
+            <div class="craft__mat">
+              <span class="craft__mat-name">Leather Upholstery</span>
+              <span class="craft__mat-origin">Hermès-grade Tannery</span>
+            </div>
+            <div class="craft__mat">
+              <span class="craft__mat-name">Naval-Grade Steel</span>
+              <span class="craft__mat-origin">Swedish Naval Steel</span>
+            </div>
+          </div>
+          <div class="craft__secondary-imgs">
+            <div class="craft__sec-img">
+              <img src="https://picsum.photos/seed/bilgin-woodwork/700/480" alt="Joinery detail" loading="lazy">
+            </div>
+            <div class="craft__sec-img craft__sec-img--offset">
+              <img src="https://picsum.photos/seed/bilgin-leather/700/480" alt="Upholstery detail" loading="lazy">
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── SPECIFICATIONS ─────────────────────────────────── -->
+  <section class="specs" id="specifications">
+    <div class="container">
+      <div class="specs__header">
+        <p class="section-label">Fleet IV</p>
+        <h2 class="section-title">Built for the<br>discerning few.</h2>
+      </div>
+      <div class="specs__grid">
+        <div class="spec-tile">
+          <div class="spec-tile__val-row">
+            <span class="spec-tile__val" data-count="72">0</span>
+            <span class="spec-tile__unit">m</span>
+          </div>
+          <span class="spec-tile__label">Length Overall</span>
+          <span class="spec-tile__sub">Aluminum superstructure</span>
+        </div>
+        <div class="spec-tile">
+          <div class="spec-tile__val-row">
+            <span class="spec-tile__val" data-count="128" data-display="12.8">0</span>
+            <span class="spec-tile__unit">m</span>
+          </div>
+          <span class="spec-tile__label">Beam</span>
+          <span class="spec-tile__sub">Naval architecture</span>
+        </div>
+        <div class="spec-tile">
+          <div class="spec-tile__val-row">
+            <span class="spec-tile__val" data-count="32" data-display="3.2">0</span>
+            <span class="spec-tile__unit">m</span>
+          </div>
+          <span class="spec-tile__label">Draft</span>
+          <span class="spec-tile__sub">Full displacement</span>
+        </div>
+        <div class="spec-tile">
+          <div class="spec-tile__val-row">
+            <span class="spec-tile__val" data-count="890">0</span>
+            <span class="spec-tile__unit">GT</span>
+          </div>
+          <span class="spec-tile__label">Gross Tonnage</span>
+          <span class="spec-tile__sub">Steel hull</span>
+        </div>
+        <div class="spec-tile">
+          <div class="spec-tile__val-row">
+            <span class="spec-tile__val" data-count="18">0</span>
+            <span class="spec-tile__unit">kn</span>
+          </div>
+          <span class="spec-tile__label">Maximum Speed</span>
+          <span class="spec-tile__sub">Twin MTU engines</span>
+        </div>
+        <div class="spec-tile">
+          <div class="spec-tile__val-row">
+            <span class="spec-tile__val" data-count="14">0</span>
+            <span class="spec-tile__unit">kn</span>
+          </div>
+          <span class="spec-tile__label">Cruise Speed</span>
+          <span class="spec-tile__sub">Optimal efficiency</span>
+        </div>
+        <div class="spec-tile">
+          <div class="spec-tile__val-row">
+            <span class="spec-tile__val" data-count="4200">0</span>
+            <span class="spec-tile__unit">nm</span>
+          </div>
+          <span class="spec-tile__label">Range</span>
+          <span class="spec-tile__sub">At 12 knots</span>
+        </div>
+        <div class="spec-tile">
+          <div class="spec-tile__val-row">
+            <span class="spec-tile__val" data-count="12">0</span>
+            <span class="spec-tile__unit"></span>
+          </div>
+          <span class="spec-tile__label">Guests</span>
+          <span class="spec-tile__sub">6 suites + master</span>
+        </div>
+      </div>
+      <div class="specs__detail-row">
+        <div class="specs__detail">
+          <span class="specs__detail-label">Propulsion</span>
+          <span class="specs__detail-val">Twin MTU 16V 4000 M73L diesel engines · 5,600 HP each</span>
+        </div>
+        <div class="specs__detail">
+          <span class="specs__detail-label">Classification</span>
+          <span class="specs__detail-val">Bureau Veritas · RINA · Lloyd's Register available</span>
+        </div>
+        <div class="specs__detail">
+          <span class="specs__detail-label">Construction</span>
+          <span class="specs__detail-val">Naval-grade steel hull · Marine aluminium superstructure</span>
+        </div>
+        <div class="specs__detail">
+          <span class="specs__detail-label">Delivery</span>
+          <span class="specs__detail-val">36–48 months from contract to commissioning</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── GALLERY ────────────────────────────────────────── -->
+  <section class="gallery" id="gallery">
+    <div class="container">
+      <div class="gallery__header">
+        <p class="section-label">Visual Journal</p>
+        <h2 class="section-title">Each angle tells<br>a different story.</h2>
+      </div>
+    </div>
+    <div class="gallery__grid">
+      <div class="gallery__cell gallery__cell--tall">
+        <div class="gallery__img-wrap" data-parallax-wrap>
+          <img src="https://picsum.photos/seed/bilgin-gal1/900/1300" alt="Sundeck at dusk" data-parallax data-parallax-speed="0.12" loading="lazy">
+          <div class="gallery__hover-veil">
+            <span>Sundeck at dusk</span>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__cell">
+        <div class="gallery__img-wrap" data-parallax-wrap>
+          <img src="https://picsum.photos/seed/bilgin-gal2/900/640" alt="Helm station" data-parallax data-parallax-speed="0.06" loading="lazy">
+          <div class="gallery__hover-veil">
+            <span>Helm station</span>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__cell">
+        <div class="gallery__img-wrap" data-parallax-wrap>
+          <img src="https://picsum.photos/seed/bilgin-gal3/900/640" alt="Aft deck" data-parallax data-parallax-speed="0.10" loading="lazy">
+          <div class="gallery__hover-veil">
+            <span>Aft deck &amp; tender garage</span>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__cell gallery__cell--wide">
+        <div class="gallery__img-wrap" data-parallax-wrap>
+          <img src="https://picsum.photos/seed/bilgin-gal4/1800/640" alt="Departing Istanbul" data-parallax data-parallax-speed="0.05" loading="lazy">
+          <div class="gallery__hover-veil">
+            <span>Departing the Bosphorus</span>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__cell">
+        <div class="gallery__img-wrap" data-parallax-wrap>
+          <img src="https://picsum.photos/seed/bilgin-gal5/900/640" alt="Spa" data-parallax data-parallax-speed="0.08" loading="lazy">
+          <div class="gallery__hover-veil">
+            <span>Spa &amp; wellness</span>
+          </div>
+        </div>
+      </div>
+      <div class="gallery__cell gallery__cell--tall">
+        <div class="gallery__img-wrap" data-parallax-wrap>
+          <img src="https://picsum.photos/seed/bilgin-gal6/900/1300" alt="The mast" data-parallax data-parallax-speed="0.14" loading="lazy">
+          <div class="gallery__hover-veil">
+            <span>The mast at twilight</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── BRAND STORY ────────────────────────────────────── -->
+  <section class="story" id="story">
+    <div class="story__bg-img" data-parallax-wrap>
+      <!-- Note: parallax on this image is driven by initCinematicSections, not data-parallax -->
+      <img src="https://picsum.photos/seed/bilgin-istanbul/1920/1080" alt="Istanbul shipyard" loading="lazy">
+      <div class="story__bg-veil"></div>
+    </div>
+    <div class="container">
+      <div class="story__inner">
+        <p class="section-label section-label--light">Heritage</p>
+        <h2 class="story__title">Three generations<br>of maritime mastery.</h2>
+        <div class="story__timeline">
+          <div class="story__tl-item">
+            <span class="story__tl-year">1938</span>
+            <span class="story__tl-event">The Bilgin shipyard opens on the banks of the Golden Horn, Istanbul.</span>
+          </div>
+          <div class="story__tl-item">
+            <span class="story__tl-year">1972</span>
+            <span class="story__tl-event">First international commission — a 42 m vessel for a European collector.</span>
+          </div>
+          <div class="story__tl-item">
+            <span class="story__tl-year">2001</span>
+            <span class="story__tl-event">Launch of the Bilgin 156 at 47 m, establishing a new standard for Turkish shipbuilding.</span>
+          </div>
+          <div class="story__tl-item">
+            <span class="story__tl-year">2019</span>
+            <span class="story__tl-event">Delivery of the Bilgin 263 — at 80 m, the largest superyacht ever built in Turkey.</span>
+          </div>
+        </div>
+        <p class="story__body">Since 1938, the Bilgin family has worked from the shores of the Bosphorus — where East meets West and the ancient meets the modern. Every vessel we build carries that spirit: a commitment to craft that does not compromise, a vision that does not follow trends, and a belief that the best work is always built to last.</p>
+        <a href="#cta" class="btn btn--primary btn--gold-outline">Begin a Conversation</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── PRIVATE VIEWING CTA ────────────────────────────── -->
+  <section class="cta-sec" id="cta">
+    <div class="cta-sec__ambient"></div>
+    <div class="container">
+      <div class="cta-sec__inner">
+        <p class="section-label">Private Viewing</p>
+        <h2 class="cta-sec__title">Begin your<br>private journey.</h2>
+        <p class="cta-sec__sub">Every Bilgin begins with a conversation. Our team will guide you through the full commission process — from initial design consultation to delivery at sea — in complete confidence.</p>
+        <form class="cta-form" id="ctaForm" novalidate>
+          <div class="cta-form__row">
+            <div class="cta-form__group">
+              <label for="fname">Full Name</label>
+              <input type="text" id="fname" name="name" placeholder="Your full name" autocomplete="name">
+            </div>
+            <div class="cta-form__group">
+              <label for="femail">Email Address</label>
+              <input type="email" id="femail" name="email" placeholder="your@email.com" autocomplete="email">
+            </div>
+          </div>
+          <div class="cta-form__row">
+            <div class="cta-form__group cta-form__group--full">
+              <label for="fmessage">Your Vision</label>
+              <textarea id="fmessage" name="message" rows="3" placeholder="Tell us briefly about what you have in mind..."></textarea>
+            </div>
+          </div>
+          <div class="cta-form__footer">
+            <button type="submit" class="btn btn--primary btn--large">Request Private Consultation</button>
+            <span class="cta-form__note">Strictly by appointment. All enquiries handled in complete confidence.</span>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── FOOTER ─────────────────────────────────────────── -->
+  <footer class="footer">
+    <div class="footer__top">
+      <div class="footer__brand">
+        <div class="footer__logo">
+          <span class="footer__logo-b">BILGIN</span>
+          <span class="footer__logo-y">YACHT</span>
+        </div>
+        <p class="footer__tagline">Istanbul, Turkey · Since 1938</p>
+        <p class="footer__address">Haliç Tersanesi, 34445 Eyüpsultan<br>Istanbul, Turkey</p>
+      </div>
+      <nav class="footer__nav">
+        <div class="footer__col">
+          <p class="footer__col-head">Discover</p>
+          <a href="#exterior">The Collection</a>
+          <a href="#interior">Interiors</a>
+          <a href="#craftsmanship">Craftsmanship</a>
+          <a href="#specifications">Specifications</a>
+        </div>
+        <div class="footer__col">
+          <p class="footer__col-head">Company</p>
+          <a href="#story">Our Heritage</a>
+          <a href="#">The Team</a>
+          <a href="#">Press &amp; Media</a>
+          <a href="#">Careers</a>
+        </div>
+        <div class="footer__col">
+          <p class="footer__col-head">Contact</p>
+          <a href="#cta">Private Viewing</a>
+          <a href="#">General Enquiry</a>
+          <a href="#">Brokerage</a>
+          <a href="#">After-Sales</a>
+        </div>
+      </nav>
+    </div>
+    <div class="footer__rule"></div>
+    <div class="footer__bottom">
+      <p class="footer__legal">&copy; 2026 Bilgin Denizcilik &amp; Tersanesi. All rights reserved.</p>
+      <div class="footer__social">
+        <a href="#" class="footer__social-a" aria-label="Instagram">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="2" y="2" width="20" height="20" rx="5"/>
+            <circle cx="12" cy="12" r="4"/>
+            <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/>
+          </svg>
+        </a>
+        <a href="#" class="footer__social-a" aria-label="LinkedIn">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/>
+            <rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/>
+          </svg>
+        </a>
+        <a href="#" class="footer__social-a" aria-label="YouTube">
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M22.54 6.42a2.78 2.78 0 0 0-1.95-1.96C18.88 4 12 4 12 4s-6.88 0-8.59.46a2.78 2.78 0 0 0-1.95 1.96A29 29 0 0 0 1 12a29 29 0 0 0 .46 5.58 2.78 2.78 0 0 0 1.95 1.95C5.12 20 12 20 12 20s6.88 0 8.59-.47a2.78 2.78 0 0 0 1.95-1.95A29 29 0 0 0 23 12a29 29 0 0 0-.46-5.58z"/>
+            <polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02" fill="currentColor" stroke="none"/>
+          </svg>
+        </a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/frame-sequence.js"></script>
+  <script src="js/scroll-experience.js"></script>
+  <script src="js/main.js"></script>
+  <script type="module" src="js/asset-loader-init.js"></script>
+</body>
+</html>

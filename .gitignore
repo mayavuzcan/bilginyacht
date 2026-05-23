@@ -1,0 +1,27 @@
+# ── SECURITY ─────────────────────────────────────────────
+.env
+.env.local
+.env.production
+
+# ── DEPENDENCIES ──────────────────────────────────────────
+node_modules/
+package-lock.json
+
+# ── GENERATED ASSETS (large files — regenerate with npm run generate) ──
+assets/generated/videos/
+assets/generated/frames/
+# Note: generated images ARE committed so the site works without running generation
+# Uncomment the line below to also exclude images:
+# assets/generated/images/
+
+# ── LOGS ──────────────────────────────────────────────────
+*.log
+npm-debug.log*
+logs/
+
+# ── OS ────────────────────────────────────────────────────
+.DS_Store
+Thumbs.db
+
+# ── IDE / Claude Code ─────────────────────────────────────
+.claude/

@@ -1,0 +1,34 @@
+{
+  "generated": "2026-05-23T11:36:02.367Z",
+  "images": {
+    "hero": "/assets/generated/images/hero-1779486010820.jpg",
+    "exterior-bow": "/assets/generated/images/exterior-bow-1779486044028.jpg",
+    "exterior-profile": "/assets/generated/images/exterior-profile-1779486075491.jpg",
+    "exterior-aft": "/assets/generated/images/exterior-aft-1779486108140.jpg",
+    "interior-salon": "/assets/generated/images/interior-salon-1779486137983.jpg",
+    "interior-master": "/assets/generated/images/interior-master-1779486168314.jpg",
+    "interior-dining": "/assets/generated/images/interior-dining-1779486202293.jpg",
+    "craftsmanship": "/assets/generated/images/craftsmanship-1779486237877.jpg",
+    "gallery-1": "/assets/generated/images/gallery-1-1779486270046.jpg",
+    "gallery-2": "/assets/generated/images/gallery-2-1779486301912.jpg",
+    "gallery-3": "/assets/generated/images/gallery-3-1779486332818.jpg",
+    "gallery-4": "/assets/generated/images/gallery-4-1779486362676.jpg",
+    "gallery-5": "/assets/generated/images/gallery-5-1779486391435.jpg",
+    "gallery-6": "/assets/generated/images/gallery-6-1779486425507.jpg"
+  },
+  "videos": {
+    "hero": "/assets/generated/videos/hero-1779536160706.mp4"
+  },
+  "frames": {
+    "hero": {
+      "dir": "/assets/generated/frames",
+      "count": 241,
+      "fps": 24,
+      "duration": 10.042,
+      "quality": 2,
+      "scale": 1280,
+      "pattern": "frame_%04d.jpg",
+      "generated": "2026-05-23T11:37:53.798Z"
+    }
+  }
+}

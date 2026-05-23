@@ -1,0 +1,25 @@
+{
+  "name": "bilgin-yacht",
+  "version": "1.0.0",
+  "description": "Bilgin Yacht — Ultra-premium luxury superyacht website with FAL AI-generated cinematic assets",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js",
+    "generate": "node scripts/generate-assets.js",
+    "generate:images": "node scripts/generate-assets.js --images-only",
+    "generate:video": "node scripts/generate-assets.js --video-only",
+    "generate:dry": "node scripts/generate-assets.js --dry-run",
+    "generate:frames": "node scripts/extract-frames.js",
+    "generate:frames:hq": "node scripts/extract-frames.js --fps=24 --scale=1920 --quality=2",
+    "generate:frames:force": "node scripts/extract-frames.js --force"
+  },
+  "dependencies": {
+    "@fal-ai/client": "^1.4.0",
+    "dotenv": "^16.4.5",
+    "express": "^4.21.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
