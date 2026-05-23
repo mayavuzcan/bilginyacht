@@ -48,7 +48,12 @@
   will-change: opacity;
 }
 .scroll-hero__video.is-ready {
-  opacity: 0;
+  opacity: 0.88;
+}
+/* Frame canvas covers video when loaded — keep video hidden beneath */
+.scroll-hero__frame-canvas.is-ready ~ .scroll-hero__video,
+.scroll-hero__video.is-behind {
+  opacity: 0 !important;
 }
 
 /* ── Frame sequence canvas (Apple-style pre-decoded JPEG rendering) ──
@@ -446,23 +451,41 @@
    MOBILE RESPONSIVE
    ══════════════════════════════════════════════════════════ */
 @media (max-width: 767px) {
-  /* Hide scroll-driven chrome on mobile */
+  /* ── Hide scroll-driven chrome on mobile ── */
   .chapter-dots,
   .chapter-counter,
   .scroll-hero__progress {
     display: none;
   }
 
-  /* Smaller headline on mobile */
+  /* ── Smaller headline on mobile ── */
   .chapter__headline {
     font-size: clamp(2.4rem, 9vw, 3.8rem);
-    margin-bottom: 1.2rem;
+    margin-bottom: 1rem;
+    text-shadow:
+      0 2px 24px rgba(7,17,31,0.7),
+      0 4px 60px rgba(7,17,31,0.5);
   }
 
-  /* Align chapters to bottom third on mobile */
+  /* ── Chapter subtext on mobile ── */
+  .chapter__sub {
+    font-size: clamp(0.85rem, 3.5vw, 1rem);
+    max-width: 100%;
+    line-height: 1.7;
+  }
+
+  /* ── Chapter eyebrow ── */
+  .chapter__eyebrow {
+    font-size: 0.6rem;
+    margin-bottom: 1rem;
+  }
+
+  /* ── Align chapters to bottom third on mobile, safe-area aware ── */
   .chapter {
     align-items: flex-end;
-    padding: 0 1.5rem 6.5rem;
+    padding: 0 max(1.5rem, env(safe-area-inset-left, 1.5rem))
+               max(6rem, calc(5.5rem + env(safe-area-inset-bottom, 0px)))
+               max(1.5rem, env(safe-area-inset-left, 1.5rem));
   }
   .chapter__inner,
   .chapter__inner--right {
@@ -475,16 +498,33 @@
     text-align: left;
     margin: 0;
   }
-  .chapter__sub { max-width: 100%; }
 
-  /* Smaller vessel on mobile */
+  /* ── Chapter CTA button ── */
+  .chapter__btn {
+    padding: 0.9rem 2rem;
+    min-height: 44px;
+    display: inline-flex;
+    align-items: center;
+    margin-top: 2rem;
+  }
+
+  /* ── Smaller vessel on mobile ── */
   .scroll-hero__vessel .vessel-svg {
     width: 100vw;
     opacity: 0.5;
   }
 
-  /* Scroll cue hidden on mobile (no scroll control) */
+  /* ── Scroll cue hidden on mobile (no scroll control) ── */
   .chapter__scroll-cue { display: none; }
+
+  /* ── Progress bar stays visible as thin swipe indicator ── */
+  .scroll-hero__progress {
+    display: block;
+    height: 2px;
+  }
+  .scroll-hero__progress-fill {
+    background: linear-gradient(to right, rgba(200,169,81,0.4), var(--gold));
+  }
 }
 
 /* ══════════════════════════════════════════════════════════

@@ -27,7 +27,9 @@ body::after {
 }
 
 .nav.is-scrolled {
-  background: rgba(7, 17, 31, 0.92);
+  background: rgba(7, 17, 31, 0.78);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
 }
 
 .nav__inner {
@@ -301,12 +303,53 @@ body::after {
   .craft__headline,
   .story__title,
   .cta-sec__title {
-    font-size: clamp(3.2rem, 14vw, 5.4rem);
+    font-size: clamp(3rem, 13vw, 5.4rem);
+    line-height: 0.96;
   }
 
   .chapter__inner,
   .chapter__inner--left,
   .chapter__inner--right {
     max-width: 100%;
+  }
+
+  /* ── Nav mobile panel on light theme sections ── */
+  .nav__mobile-panel {
+    background: rgba(7, 17, 31, 0.96);
+    backdrop-filter: blur(28px) saturate(180%);
+    -webkit-backdrop-filter: blur(28px) saturate(180%);
+  }
+
+  /* ── Section padding tighter on mobile ── */
+  :root {
+    --section-pad: clamp(3.5rem, 9vw, 6rem);
+  }
+
+  .exterior__panel--intro,
+  .interior,
+  .specs {
+    padding-left: max(1.5rem, env(safe-area-inset-left, 1.5rem));
+    padding-right: max(1.5rem, env(safe-area-inset-right, 1.5rem));
+  }
+
+  /* ── Interior header full-width on mobile ── */
+  .interior__header { max-width: 100%; }
+
+  /* ── Gallery no gap on mobile ── */
+  .gallery__grid { gap: 2px; }
+}
+
+@media (max-width: 480px) {
+  .chapter__headline,
+  .section-title,
+  .craft__headline,
+  .story__title,
+  .cta-sec__title {
+    font-size: clamp(2.6rem, 12.5vw, 4rem);
+  }
+
+  /* ── Chapter padding for small phones ── */
+  .chapter {
+    padding-inline: max(1.2rem, env(safe-area-inset-left, 1.2rem));
   }
 }
