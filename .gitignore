@@ -7,11 +7,11 @@
 node_modules/
 package-lock.json
 
-# ── GENERATED ASSETS (large files — regenerate with npm run generate) ──
-assets/generated/videos/
-assets/generated/frames/
-# Note: generated images ARE committed so the site works without running generation
-# Uncomment the line below to also exclude images:
+# ── GENERATED ASSETS ──────────────────────────────────────
+# Images, videos and frames ARE committed — site works on any host without re-generating.
+# To exclude large files from git, uncomment the lines below:
+# assets/generated/videos/
+# assets/generated/frames/
 # assets/generated/images/
 
 # ── LOGS ──────────────────────────────────────────────────
