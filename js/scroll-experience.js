@@ -269,7 +269,11 @@ class ScrollVideoHero {
           self.framePlayer.renderProgress(p);
         } else if (self.videoReady && self.video?.duration) {
           const target = self.video.duration * p;
-          if (Math.abs(self.video.currentTime - target) > 0.033) {
+          /* Mobile: seek threshold 0.12s — iOS video decode is slow,
+             seeking every 33ms causes frame drops and UI freeze.
+             Desktop: 0.033s (1 frame at 30fps) for tight accuracy. */
+          const threshold = self.isMobile ? 0.12 : 0.033;
+          if (Math.abs(self.video.currentTime - target) > threshold) {
             self.video.currentTime = target;
           }
         }
@@ -376,9 +380,12 @@ function initParallaxImages() {
    Blur-in, scale, and clip-path wipe reveals for sections.
    ──────────────────────────────────────────────────────── */
 function initCinematicSections() {
-  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  const blur    = 0;
-  const scale   = reduced ? 1 : 0.97;
+  const reduced  = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isMobile = window.matchMedia('(max-width: 767px)').matches;
+  const blur     = 0;
+  /* On mobile skip scale transforms — compositing many layers causes
+     frame drops on lower-end devices. Simple y+opacity only. */
+  const scale    = (reduced || isMobile) ? 1 : 0.97;
 
   /* Section titles */
   gsap.utils.toArray('.section-title').forEach(el => {
@@ -465,8 +472,8 @@ function initCinematicSections() {
   gsap.utils.toArray('.gallery__cell').forEach((cell, i) => {
     gsap.from(cell, {
       scrollTrigger: { trigger: '.gallery__grid', start: 'top 82%', once: true },
-      y: 80, opacity: 0, scale: 0.96,
-      duration: 1.2, delay: i * 0.09, ease: 'power3.out',
+      y: isMobile ? 40 : 80, opacity: 0, scale,
+      duration: isMobile ? 0.7 : 1.2, delay: isMobile ? i * 0.05 : i * 0.09, ease: 'power3.out',
     });
     if (!window.matchMedia('(max-width: 767px)').matches) {
       const img = cell.querySelector('img');

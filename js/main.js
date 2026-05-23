@@ -361,7 +361,11 @@ function initAnchors() {
       const target = document.querySelector(id);
       if (!target) return;
       e.preventDefault();
-      lenis && lenis.scrollTo(target, { offset: -80, duration: 1.6 });
+      if (window.lenis) {
+        window.lenis.scrollTo(target, { offset: -80, duration: 1.6 });
+      } else {
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
     });
   });
 }
@@ -409,7 +413,12 @@ function initProgressBar() {
 /* ── INIT ────────────────────────────────────────────────── */
 document.addEventListener('DOMContentLoaded', () => {
   const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-  if (!reducedMotion) initLenis();
+  const isMobile      = window.matchMedia('(max-width: 767px)').matches;
+  /* Lenis smooth scroll: desktop only.
+     On mobile, Lenis intercepts touch events in JS and fights native
+     momentum scrolling — causes stutter and freeze on iOS/Android.
+     Native scroll + ScrollTrigger works perfectly without it. */
+  if (!reducedMotion && !isMobile) initLenis();
 
   /* Cinematic scroll experience (creates window.scrollHeroInstance) */
   if (typeof window.initScrollExperience === 'function') {
