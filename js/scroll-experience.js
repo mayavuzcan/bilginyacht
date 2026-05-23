@@ -258,37 +258,54 @@ class ScrollVideoHero {
       start     : 'top top',
       end       : `+=${this.scrollVh}%`,
       pin       : true,
-      scrub     : this.isMobile ? 0.5 : 0.9,  /* faster response on mobile touch */
+      scrub     : 0.9,
       animation : tl,
 
       onUpdate(st) {
         const p = st.progress;
 
-        /* ── Rendering: frame sequence → video scrub fallback ── */
+        /* ── Rendering ─────────────────────────────────────
+           Desktop:  frame canvas (JPEG sequence) preferred,
+                     else continuous currentTime scrubbing.
+           Mobile:   NO continuous seeking — each currentTime
+                     seek on iOS triggers a video frame decode
+                     that blocks the main thread ~20-80 ms.
+                     Instead we seek once per chapter change
+                     (max 7 seeks total) using fastSeek().
+           ────────────────────────────────────────────────── */
         if (self.useFrames && self.framePlayer?.canRender) {
           self.framePlayer.renderProgress(p);
-        } else if (self.videoReady && self.video?.duration) {
+        } else if (!self.isMobile && self.videoReady && self.video?.duration) {
           const target = self.video.duration * p;
-          /* Mobile: seek threshold 0.12s — iOS video decode is slow,
-             seeking every 33ms causes frame drops and UI freeze.
-             Desktop: 0.033s (1 frame at 30fps) for tight accuracy. */
-          const threshold = self.isMobile ? 0.12 : 0.033;
-          if (Math.abs(self.video.currentTime - target) > threshold) {
+          if (Math.abs(self.video.currentTime - target) > 0.033) {
             self.video.currentTime = target;
           }
         }
 
-        /* ── Scroll progress bar (scroll-driven mode only) ─ */
+        /* ── Scroll progress bar ── */
         if (self.progressFill && (self.useFrames ? self.framePlayer?.canRender : true)) {
           self.progressFill.style.transform = `scaleX(${p})`;
         }
 
-        /* ── Chapter dot + counter ─────────────────────── */
+        /* ── Chapter dot + counter ── */
         const idx = self._chapterAt(p * 100);
         if (idx !== self.activeIdx) {
           self.activeIdx = idx;
           self._updateDots(idx);
           if (self.curLabel) self.curLabel.textContent = String(idx + 1).padStart(2, '0');
+
+          /* Mobile chapter-snapshot: seek video to this chapter's
+             peak-in frame. fastSeek() jumps to nearest keyframe —
+             much faster than currentTime on iOS/Android. */
+          if (self.isMobile && self.videoReady && self.video?.duration) {
+            const peakPct  = ScrollVideoHero.CHAPTER_RANGES[idx][1] / 100;
+            const seekTime = self.video.duration * peakPct;
+            if (typeof self.video.fastSeek === 'function') {
+              self.video.fastSeek(seekTime);
+            } else {
+              self.video.currentTime = seekTime;
+            }
+          }
         }
       },
     });
